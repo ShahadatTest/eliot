@@ -125,7 +125,7 @@ class EliotJSONEncoderTests(TestCase):
 
         serialized = loads(dumps(test_data, default=json_default))
 
-        self.assertEqual(serialized["path"], "/tmp/test")
+        self.assertEqual(serialized["path"], str(test_data["path"]))
         self.assertEqual(serialized["datetime"], "2024-01-01T12:00:00")
         self.assertEqual(serialized["date"], "2024-01-01")
         self.assertEqual(serialized["time"], "12:00:00")

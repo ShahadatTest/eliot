@@ -222,7 +222,7 @@ class CommandLineTests(TestCase):
         )
         process.stdin.write(b"".join(line + b"\n" for line in lines))
         process.stdin.close()
-        result = process.stdout.read().decode("utf-8")
+        result = process.stdout.read().decode("utf-8").replace("\r\n", "\n")
         process.stdout.close()
         return result
 
