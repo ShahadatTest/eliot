@@ -196,6 +196,34 @@ class MemoryLoggerTests(TestCase):
         logger.serialize()
         self.assertEqual(logger.messages[0]["length"], "abc")
 
+    def test_serialize_without_serializer(self):
+        """Messages without a Field serializer are copied unchanged."""
+        message = {"message_type": "plain", "value": "unchanged"}
+        logger = MemoryLogger()
+        logger.write(message)
+        result = logger.serialize()
+        self.assertEqual(result, [message])
+        self.assertIsNot(result[0], message)
+        self.assertEqual(logger.messages, [message])
+
+    def test_serialize_mixed_messages(self):
+        """Plain and typed messages retain their order and source values."""
+        serializer = _MessageSerializer(
+            [
+                Field.forValue("message_type", "typed", "The type"),
+                Field("length", len, "The length"),
+            ]
+        )
+        plain = {"plain": "message"}
+        typed = {"message_type": "typed", "length": "abcd"}
+        logger = MemoryLogger()
+        logger.write(plain)
+        logger.write(typed, serializer)
+        self.assertEqual(
+            logger.serialize(), [plain, {"message_type": "typed", "length": 4}]
+        )
+        self.assertEqual(logger.messages, [plain, typed])
+
     def write_traceback(self, logger, exception):
         """
         Write an exception as a traceback to the logger.

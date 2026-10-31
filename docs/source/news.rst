@@ -1,6 +1,14 @@
 What's New
 ==========
 
+Unreleased
+^^^^^^^^^^
+
+Bug fixes:
+
+* ``MemoryLogger.serialize()`` handles plain messages without a Field serializer,
+  including logs that mix plain and typed messages.
+
 1.18.0
 ^^^^^^
 

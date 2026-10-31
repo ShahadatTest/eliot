@@ -395,7 +395,8 @@ class MemoryLogger(object):
         result = []
         for dictionary, serializer in zip(self.messages, self.serializers):
             dictionary = dictionary.copy()
-            serializer.serialize(dictionary)
+            if serializer is not None:
+                serializer.serialize(dictionary)
             result.append(dictionary)
         return result
 
