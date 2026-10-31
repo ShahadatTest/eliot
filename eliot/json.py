@@ -100,13 +100,14 @@ if platform.python_implementation() == "PyPy":
     original_json_default = json_default
 
     def json_default(o: object, original_json_default=original_json_default) -> object:
+        from dataclasses import fields, is_dataclass
         from datetime import datetime
         from enum import Enum
         from uuid import UUID
 
         # Add dataclass support
-        if hasattr(o, "__dataclass_fields__"):
-            return {field: getattr(o, field) for field in o.__dataclass_fields__}
+        if is_dataclass(o) and not isinstance(o, type):
+            return {field.name: getattr(o, field.name) for field in fields(o)}
         if isinstance(o, datetime):
             return o.isoformat()
 

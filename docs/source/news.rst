@@ -1,6 +1,14 @@
 What's New
 ==========
 
+Unreleased
+^^^^^^^^^^
+
+Bug fixes:
+
+* JSON serialization on PyPy ignores dataclass ``InitVar`` and ``ClassVar``
+  pseudo-fields and handles dataclass types through the normal repr fallback.
+
 1.18.0
 ^^^^^^
 
